@@ -6,6 +6,9 @@
 #include <QFileDialog>
 #include <QPixmap>
 #include <QScrollBar>
+#include <QGraphicsScene>
+
+#include <vector>
 
 using namespace std;
 
@@ -24,14 +27,21 @@ public:
 private slots:
     void on_open_file_clicked();
     void on_zoom_slider_valueChanged(int value);
+    void on_angle_slider_valueChanged(int value);
+
+    void on_multiplication_slider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
 
 public:
-    void set_picture(QString);
-    int slider_postion{0};
-    double zoom_ratio{1.05};
+    void set_picture(QString, int);
+    void create_picture(int);
+    int slider_postion_zoom{0}, slider_postion_angle{0}, size_of_image{5};
+    double zoom_ratio{1.1};
+
+    QPixmap current_picture, static_picture;
+    QGraphicsScene *scene = new QGraphicsScene();
 
 
 };
