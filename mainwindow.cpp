@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    //startup functions
+
 }
 
 MainWindow::~MainWindow()
@@ -14,11 +16,16 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::set_picture(QString picture_location){
-    QPixmap picture(picture_location);
+    QPixmap texture(picture_location);
+    //QImage texture(picture_location);
 
-    ui->texture_viewer->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
-    picture = picture.scaled(ui->texture_viewer->size(), Qt::KeepAspectRatioByExpanding);
-    //ui->texture_viewer->set
+    QGraphicsScene *scene = new QGraphicsScene();
+    //QGraphicsView *view = new QGraphicsView(scene);
+    //QGraphicsPixmapItem *item = new QGraphicsPixmapItem(QPixmap::fromImage(texture));
+    //scene->addItem(item);
+
+    scene->addPixmap(texture);
+    ui->texture_viewer->setScene(scene);
 }
 
 void MainWindow::on_open_file_clicked()
@@ -36,4 +43,15 @@ void MainWindow::on_open_file_clicked()
 
     set_picture(opened_file);
 
+}
+
+void MainWindow::on_zoom_slider_valueChanged(int value)
+{
+    if(value > slider_postion){
+        ui->texture_viewer->scale(zoom_ratio,zoom_ratio);
+    }
+    else {
+        ui->texture_viewer->scale(1/zoom_ratio,1/zoom_ratio);
+    }
+    slider_postion = value;
 }

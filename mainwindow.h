@@ -5,6 +5,7 @@
 #include <QDir>
 #include <QFileDialog>
 #include <QPixmap>
+#include <QScrollBar>
 
 using namespace std;
 
@@ -22,12 +23,15 @@ public:
 
 private slots:
     void on_open_file_clicked();
+    void on_zoom_slider_valueChanged(int value);
 
 private:
     Ui::MainWindow *ui;
 
 public:
     void set_picture(QString);
+    int slider_postion{0};
+    double zoom_ratio{1.05};
 
 
 };
