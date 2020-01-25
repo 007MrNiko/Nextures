@@ -9,6 +9,7 @@
  * 5) Download support
  * 6) PSD opening
  * 7) Add slider fixed positions 3x3 5x5 7x7 9x9 12x12 15x15 17x17 19x19 21x21
+ * 8) Fix sliders after opening new file at default positions
  */
 
 MainWindow::MainWindow(QWidget *parent)
@@ -27,12 +28,13 @@ MainWindow::~MainWindow()
 
 void MainWindow::set_picture(QString picture_location, int size_nxn){
     QPixmap texture(picture_location);
-    //current_picture = texture;
     static_picture = texture;
+
     create_picture(size_nxn);
 
     scene->addPixmap(current_picture);
     ui->texture_viewer->setScene(scene);
+    ui->texture_viewer->fitInView(ui->texture_viewer->sceneRect(), Qt::KeepAspectRatio);
 }
 
 void MainWindow::create_picture(int size_nxn){
@@ -44,12 +46,31 @@ void MainWindow::create_picture(int size_nxn){
         for (int j{0}; j<height*size_nxn; j+=height) {
             QPainter painter(&cache_for_picture);
             painter.drawPixmap(QPoint(i,j),static_picture);
-            painter.save();
+            //painter.save();
         }
     }
 
     current_picture = cache_for_picture;
 
+}
+
+void MainWindow::reset_parametrs_to_default(){
+    //reset sliders
+    ui->texture_viewer->resetMatrix();
+    ui->zoom_slider->setValue(100);
+
+    int current_angel = ui->angle_slider->value();
+
+    if(current_angel > 0){
+        if(current_angel < 180){
+
+        }
+    }
+    else{
+
+    }
+
+    ui->angle_slider->setValue(0);
 }
 
 void MainWindow::on_open_file_clicked()
@@ -59,13 +80,15 @@ void MainWindow::on_open_file_clicked()
     // creating string with file adress
     QString opened_file = QFileDialog::getOpenFileName(this,"Open a file", QDir::homePath(), filter);
 
-    if(opened_file == ""){ // do nothing when if path is empty "nothing selected"
+    if(opened_file == ""){ // do nothing when path is empty "nothing selected"
         return;
     }
 
     ui->file_name->setText(opened_file);
 
-    set_picture(opened_file, size_of_image);
+    //reset_parametrs_to_default();
+
+    set_picture(opened_file, sizes_of_images.at(3));
 
 }
 
@@ -86,32 +109,30 @@ void MainWindow::on_angle_slider_valueChanged(int value)
 {
     if(value > slider_postion_angle){
         ui->texture_viewer->rotate(10);
-        slider_postion_angle+=10;
+        slider_postion_angle+=1;
     }
     else {
         ui->texture_viewer->rotate(-10);
-        slider_postion_angle-=10;
+        slider_postion_angle-=1;
     }
-    QString info = QString::number(value)+ "°";
+    QString info = QString::number(value*10)+ "°";
     ui->angle_status->setText(info);
 }
 
 void MainWindow::on_multiplication_slider_valueChanged(int value)
 {
-    /*if(value % 3 != 0){
-        //value+=2;
-        ui->multiplication_slider->setValue(value+1);
-
-    }*/
-
     scene->clear();
-    create_picture(value);
+    create_picture(sizes_of_images.at(value));
+
+    //reset_parametrs_to_default();
 
     scene->addPixmap(current_picture);
-    ui->texture_viewer->scale(1,1);
-    ui->texture_viewer->setScene(scene);
 
-    QString info = QString::number(value) + "x" + QString::number(value);
+    ui->texture_viewer->setScene(scene);
+    ui->texture_viewer->fitInView(ui->texture_viewer->sceneRect(), Qt::KeepAspectRatio);
+    //scene->setSceneRect(0,0,ui->texture_viewer->frameSize().width(),ui->texture_viewer->frameSize().height());
+
+    QString info = QString::number(sizes_of_images.at(value)) + "x" + QString::number(sizes_of_images.at(value));
     ui->multiplication_status->setText(info);
 
     //ui->texture_viewer->setTransform(QTransform());

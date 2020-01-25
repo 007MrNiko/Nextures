@@ -60,19 +60,22 @@
       <item>
        <widget class="QSlider" name="multiplication_slider">
         <property name="minimum">
-         <number>3</number>
+         <number>0</number>
         </property>
         <property name="maximum">
-         <number>21</number>
+         <number>8</number>
         </property>
         <property name="singleStep">
-         <number>2</number>
+         <number>1</number>
         </property>
         <property name="pageStep">
-         <number>2</number>
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>3</number>
         </property>
         <property name="sliderPosition">
-         <number>9</number>
+         <number>3</number>
         </property>
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
@@ -151,10 +154,10 @@
           <item>
            <widget class="QSlider" name="angle_slider">
             <property name="minimum">
-             <number>-360</number>
+             <number>-36</number>
             </property>
             <property name="maximum">
-             <number>360</number>
+             <number>36</number>
             </property>
             <property name="singleStep">
              <number>10</number>
