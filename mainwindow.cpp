@@ -5,7 +5,7 @@
  * 1) Fix position after changing n x n
  * 2) Add toolbar (rotate, reset, zoom) by buttons
  * 3) UI/UX
- * 4) Check at UNIX
+ * 4) Check at UNIX +
  * 5) Download support
  * 6) PSD opening
  * 7) Add slider fixed positions 3x3 5x5 7x7 9x9 12x12 15x15 17x17 19x19 21x21
@@ -33,7 +33,8 @@ void MainWindow::set_picture(QString picture_location, int size_nxn){
     create_picture(size_nxn);
 
     scene->addPixmap(current_picture);
-    ui->texture_viewer->setScene(scene);
+    ui->texture_viewer->setScene(&*scene);
+    ui->texture_viewer->viewport()->repaint();
     ui->texture_viewer->fitInView(ui->texture_viewer->sceneRect(), Qt::KeepAspectRatio);
 }
 
@@ -76,7 +77,7 @@ void MainWindow::reset_parametrs_to_default(){
 void MainWindow::on_open_file_clicked()
 {
     // seting filter data in explorer
-    QString filter = "All File (*.*) ;; Image File (*.png; *.jpg; *.jpeg) ;; PSD File (*.psd)";
+    QString filter = "All Files (*.*) ;; Image Files (*.png; *.jpg; *.jpeg) ;; PSD Files (*.psd)";
     // creating string with file adress
     QString opened_file = QFileDialog::getOpenFileName(this,"Open a file", QDir::homePath(), filter);
 
@@ -88,7 +89,7 @@ void MainWindow::on_open_file_clicked()
 
     //reset_parametrs_to_default();
 
-    set_picture(opened_file, sizes_of_images.at(3));
+    set_picture(opened_file, sizes_of_images.at(ui->multiplication_slider->value()));
 
 }
 
@@ -108,27 +109,37 @@ void MainWindow::on_zoom_slider_valueChanged(int value)
 void MainWindow::on_angle_slider_valueChanged(int value)
 {
     if(value > slider_postion_angle){
-        ui->texture_viewer->rotate(10);
+        ui->texture_viewer->rotate(5);
         slider_postion_angle+=1;
     }
-    else {
-        ui->texture_viewer->rotate(-10);
+    else if(value < slider_postion_angle) {
+        ui->texture_viewer->rotate(-5);
         slider_postion_angle-=1;
     }
-    QString info = QString::number(value*10)+ "°";
+    QString info = QString::number(value*5)+ "°";
     ui->angle_status->setText(info);
 }
 
 void MainWindow::on_multiplication_slider_valueChanged(int value)
 {
     scene->clear();
+    /*
+
+    QPixmap cache_for_picture(0, 0);
+
+    scene->addPixmap(cache_for_picture);
+    ui->texture_viewer->setScene(scene);
+    ui->texture_viewer->fitInView(ui->texture_viewer->sceneRect(), Qt::KeepAspectRatio);
+
+    */
     create_picture(sizes_of_images.at(value));
 
     //reset_parametrs_to_default();
 
     scene->addPixmap(current_picture);
 
-    ui->texture_viewer->setScene(scene);
+    ui->texture_viewer->setScene(&*scene);
+    ui->texture_viewer->viewport()->repaint();
     ui->texture_viewer->fitInView(ui->texture_viewer->sceneRect(), Qt::KeepAspectRatio);
     //scene->setSceneRect(0,0,ui->texture_viewer->frameSize().width(),ui->texture_viewer->frameSize().height());
 

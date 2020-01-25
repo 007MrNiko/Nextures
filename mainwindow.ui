@@ -154,10 +154,10 @@
           <item>
            <widget class="QSlider" name="angle_slider">
             <property name="minimum">
-             <number>-36</number>
+             <number>-72</number>
             </property>
             <property name="maximum">
-             <number>36</number>
+             <number>72</number>
             </property>
             <property name="singleStep">
              <number>10</number>
@@ -184,6 +184,9 @@
     </item>
     <item row="2" column="0">
      <layout class="QFormLayout" name="formLayout">
+      <property name="sizeConstraint">
+       <enum>QLayout::SetDefaultConstraint</enum>
+      </property>
       <item row="0" column="0">
        <widget class="QPushButton" name="open_file">
         <property name="text">
@@ -192,7 +195,14 @@
        </widget>
       </item>
       <item row="0" column="1">
-       <widget class="QLineEdit" name="file_name"/>
+       <widget class="QLineEdit" name="file_name">
+        <property name="minimumSize">
+         <size>
+          <width>600</width>
+          <height>0</height>
+         </size>
+        </property>
+       </widget>
       </item>
      </layout>
     </item>
@@ -204,7 +214,7 @@
      <x>0</x>
      <y>0</y>
      <width>695</width>
-     <height>25</height>
+     <height>22</height>
     </rect>
    </property>
   </widget>

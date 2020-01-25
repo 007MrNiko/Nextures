@@ -6,7 +6,11 @@
 #include <QFileDialog>
 #include <QPixmap>
 #include <QScrollBar>
+#include <QGraphicsView>
 #include <QGraphicsScene>
+#include <QGraphicsPixmapItem>
+#include <QWheelEvent>
+#include <QKeyEvent>
 
 #include <vector>
 
@@ -29,6 +33,7 @@ private slots:
     void on_zoom_slider_valueChanged(int value);
     void on_angle_slider_valueChanged(int value);
     void on_multiplication_slider_valueChanged(int value);
+
 
 private:
     Ui::MainWindow *ui;
