@@ -34,7 +34,7 @@ void MainWindow::set_picture(QString picture_location, int size_nxn){
 
     scene->addPixmap(current_picture);
     ui->texture_viewer->setScene(&*scene);
-    ui->texture_viewer->viewport()->repaint();
+    //ui->texture_viewer->viewport()->repaint();
     ui->texture_viewer->fitInView(ui->texture_viewer->sceneRect(), Qt::KeepAspectRatio);
 }
 
